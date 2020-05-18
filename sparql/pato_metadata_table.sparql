@@ -1,0 +1,36 @@
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+SELECT DISTINCT ?term ?curie ?acc ?name ?description ?is_obsolete ?replacement ?replacement_acc
+WHERE {
+  OPTIONAL
+  { 
+    ?term rdfs:label ?name .
+  }
+  OPTIONAL
+  { 
+    ?term <http://www.geneontology.org/formats/oboInOwl#id> ?curie .
+  }
+  OPTIONAL
+  { 
+    ?term <http://purl.obolibrary.org/obo/IAO_0000115> ?description .
+  }
+  OPTIONAL
+  { 
+    ?term owl:deprecated ?is_obsolete .
+  }
+  OPTIONAL
+  { 
+    ?term <http://purl.obolibrary.org/obo/IAO_0100001> ?replacement .
+  }
+  FILTER(isIRI(?term) && regex(str(?term), "http[:][/][/]purl[.]obolibrary[.]org[/]obo[/]PATO[_]"))
+	BIND(REPLACE(STR(?term), "http[:][/][/]purl[.]obolibrary[.]org[/]obo[/]PATO[_]", "PATO:", "i") AS ?acc)
+	BIND(
+		IF(	
+			regex(str(?replacement), "http[:][/][/]www[.]ebi[.]ac[.]uk[/]efo[/]EFO[_]")
+				|| regex(str(?replacement), "http[:][/][/]purl[.]obolibrary[.]org[/]obo[/]")
+				|| regex(str(?replacement), "http[:][/][/]www[.]orpha.net[/]ORDO[/]"),
+			REPLACE(
+				REPLACE(STR(?replacement), "http[:][/][/]purl[.]obolibrary[.]org[/]obo[/]|http[:][/][/]www[.]ebi[.]ac[.]uk[/]efo[/]|http[:][/][/]www[.]orpha.net[/]ORDO[/]", "", "i"),
+			"[_]", ":", "i")
+			,?replacement) 
+		AS ?replacement_acc)}
