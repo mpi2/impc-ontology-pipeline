@@ -8,6 +8,7 @@ ONTOLOGY_FILES = $(patsubst %, ontologies/%.owl, $(ONTOLOGIES))
 TABLE_FILES = $(patsubst %, tables/%_metadata_table.csv, $(TABLES))
 MIR=true
 GIT_UPHENO=https://github.com/obophenotype/upheno.git
+TODAY ?= $(shell date +%Y-%m-%d)
 
 ontologies/%.owl:
 	$(ROBOT) merge -I $(OBO)/$*.owl \
@@ -49,7 +50,7 @@ ontologies/mp-hp.owl: tmp/upheno/mp-hp-view.owl
 	cp $< $@
 
 tables/%.csv: ontologies/%.owl
-	$(ROBOT) query --use-graphs true -f csv -i $< --query sparql/$*_metadata_table.sparql $@
+	$(ROBOT) query --use-graphs true -f csv -i $< --query sparql/$*.sparql $@
 
 
 #######################################
