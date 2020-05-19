@@ -57,6 +57,15 @@ tables/%.csv: ontologies/%.owl
 #### Table for IMPC search index ######
 # https://github.com/monarch-ebi-dev/impc-ontology-pipeline/issues/1
 
+tables/mp_lexical.csv: ontologies/mp.owl
+	$(ROBOT) query --use-graphs true -f csv -i $< --query sparql/mp_lexical.sparql $@
+	
+tables/hp_lexical.csv: ontologies/hp.owl
+	$(ROBOT) query --use-graphs true -f csv -i $< --query sparql/hp_lexical.sparql $@
+	
+tables/mp_parentage.csv: ontologies/mp.owl
+	$(ROBOT) query --use-graphs true -f csv -i $< --query sparql/mp_parentage.sparql $@
+
 tables/mp_hp_matches.csv:
 	wget http://purl.obolibrary.org/obo/upheno/mappings/mp-hp.csv -O $@
 
