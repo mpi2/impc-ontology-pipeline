@@ -69,7 +69,7 @@ tables/mp_parentage.csv: ontologies/mp.owl
 tables/mp_hp_matches.csv:
 	wget http://purl.obolibrary.org/obo/upheno/mappings/mp-hp.csv -O $@
 
-tables/impc_search_index.csv: tables/mp_lexical.csv tables/hp_lexical.csv tables/mp_parentage.csv
+tables/impc_search_index.csv: tables/mp_lexical.csv tables/hp_lexical.csv tables/mp_parentage.csv tables/mp_hp_matches.csv
 	python scripts/mp_search_indexing.py
 
 dirs:
