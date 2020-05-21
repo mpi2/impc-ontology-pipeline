@@ -25,4 +25,4 @@ singularity pull shub://obolibrary/odkfull
 singularity exec --pwd $pipeline docker://obolibrary/odkfull make impc_ontologies -B
 
 # Command to submit the job to the singularity cluster:
-# bsub -M 12G -R "rusage[mem=12G]" -o work.out -e work.err /nfs/komp2/web/mphp/pipeline.sh
+# bsub -M 12G -R "rusage[mem=12G]" -o work.out -e work.err /nfs/public/rw/homes/tc_mi01/mphp/pipeline.sh
