@@ -49,8 +49,8 @@ tmp/upheno/mp-hp-view.owl: tmp/upheno
 ontologies/mp-hp.owl: tmp/upheno/mp-hp-view.owl
 	cp $< $@
 
-tables/%.csv: ontologies/%.owl
-	$(ROBOT) query --use-graphs true -f csv -i $< --query sparql/$*.sparql $@
+tables/%_metadata_table.csv: ontologies/%.owl
+	$(ROBOT) query --use-graphs true -f csv -i $< --query sparql/$*_metadata_table.sparql $@
 
 
 #######################################
@@ -81,4 +81,4 @@ clean:
 	rm -r tmp
 
 impc_ontologies: dirs $(ONTOLOGY_FILES) $(TABLE_FILES) tables/impc_search_index.csv
-	tar cvzf impc_ontologies.tar.gz $(ONTOLOGY_FILES) tables/*.csv tables/impc_search_index.csv
+	tar cvzf impc_ontologies.tar.gz $(ONTOLOGY_FILES) tables/*.csv
