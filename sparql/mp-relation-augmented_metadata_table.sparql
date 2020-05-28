@@ -1,0 +1,32 @@
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX impc: <http://mouse-phenotype.org/IMPC_>
+SELECT DISTINCT ?acc ?entity ?ma
+WHERE {
+?term rdfs:subClassOf [
+	a owl:Restriction ;
+	owl:onProperty impc:0001 ;
+	owl:someValuesFrom ?e ]  .
+	OPTIONAL
+  { 
+    ?mae rdfs:subClassOf ?e . FILTER(isIRI(?mae) && regex(str(?mae), "http[:][/][/]purl[.]obolibrary[.]org[/]obo[/]MA[_]"))
+  }
+  FILTER(isIRI(?term) && regex(str(?term), "http[:][/][/]purl[.]obolibrary[.]org[/]obo[/]MP[_]"))
+	BIND(
+		if(	bound(?mae), 
+				REPLACE(STR(?mae), "http[:][/][/]purl[.]obolibrary[.]org[/]obo[/]MA[_]", "MA:", "i")
+				,"") 
+			AS ?ma)
+	BIND(REPLACE(STR(?term), "http[:][/][/]purl[.]obolibrary[.]org[/]obo[/]MP[_]", "MP:", "i") AS ?acc)
+	BIND(
+		IF(	
+			regex(str(?e), "http[:][/][/]www[.]ebi[.]ac[.]uk[/]efo[/]EFO[_]")
+				|| regex(str(?e), "http[:][/][/]purl[.]obolibrary[.]org[/]obo[/]")
+				|| regex(str(?e), "http[:][/][/]www[.]orpha.net[/]ORDO[/]"),
+			REPLACE(
+				REPLACE(STR(?e), "http[:][/][/]purl[.]obolibrary[.]org[/]obo[/]|http[:][/][/]www[.]ebi[.]ac[.]uk[/]efo[/]|http[:][/][/]www[.]orpha.net[/]ORDO[/]", "", "i"),
+			"[_]", ":", "i")
+			,?e) 
+		AS ?entity)
+		
+}
