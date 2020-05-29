@@ -78,8 +78,9 @@ tables/mp_hp_matches.csv:
 tables/impc_search_index.csv: tables/mp_lexical.csv tables/hp_lexical.csv tables/mp_parentage.csv tables/mp_hp_matches.csv
 	python scripts/mp_search_indexing.py
 	
-tables/uberon_associations: ontologies/mp-relation-augmented.owl
-	
+tables/mp_parentage_top.csv: ontologies/mp.owl
+	$(ROBOT) query --use-graphs true -f csv -i $< --query sparql/mp_parentage_top.sparql $@
+
 
 dirs:
 	mkdir -p tmp
@@ -89,5 +90,5 @@ dirs:
 clean: 
 	rm -r tmp
 
-impc_ontologies: dirs $(ONTOLOGY_FILES) $(TABLE_FILES) tables/impc_search_index.csv
+impc_ontologies: dirs $(ONTOLOGY_FILES) $(TABLE_FILES) tables/impc_search_index.csv tables/mp_parentage_top.csv
 	tar cvzf impc_ontologies.tar.gz $(ONTOLOGY_FILES) tables/*.csv
