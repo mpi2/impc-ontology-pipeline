@@ -2,9 +2,11 @@
 
 OBO=http://purl.obolibrary.org/obo
 ROBOT=robot
+SIMPLEOBO=mp
 ONTOLOGIES=mp mp-ext-merged ma emapa uberon eco efo emap mp-hp mmusdv mpath pato uberon-ma mp-relation-augmented
 TABLES=mp ma emapa uberon eco efo emap mmusdv mpath pato mp-relation-augmented
 ONTOLOGY_FILES = $(patsubst %, ontologies/%.owl, $(ONTOLOGIES))
+ONTOLOGY_SIMPLE_OBO_FILES = $(patsubst %, ontologies/%.obo, $(SIMPLEOBO))
 TABLE_FILES = $(patsubst %, tables/%_metadata_table.csv, $(TABLES))
 MIR=true
 GIT_UPHENO=https://github.com/obophenotype/upheno.git
@@ -17,6 +19,9 @@ ontologies/%.owl:
 	query --update sparql/update_alternate_id_to_curie_syntax.ru \
 	query --update sparql/update_obo_ids.ru \
 	annotate --ontology-iri $(OBO)/$*/$@ --version-iri $(OBO)/$*/releases/$(TODAY)/$@ --output $@.tmp.owl && mv $@.tmp.owl $@
+
+ontologies/%.obo: ontologies/%.owl
+	wget $(OBO)/$*.obo -O $@
 
 ontologies/efo.owl:
 	$(ROBOT) merge -I http://www.ebi.ac.uk/efo/efo.owl \
@@ -90,5 +95,5 @@ dirs:
 clean: 
 	rm -r tmp
 
-impc_ontologies: dirs $(ONTOLOGY_FILES) $(TABLE_FILES) tables/impc_search_index.csv tables/mp_parentage_top.csv
-	tar cvzf impc_ontologies.tar.gz $(ONTOLOGY_FILES) tables/*.csv
+impc_ontologies: dirs $(ONTOLOGY_FILES) $(ONTOLOGY_SIMPLE_OBO_FILES) $(TABLE_FILES) tables/impc_search_index.csv tables/mp_parentage_top.csv
+	tar cvzf impc_ontologies.tar.gz $(ONTOLOGY_FILES) $(ONTOLOGY_SIMPLE_OBO_FILES) tables/*.csv
