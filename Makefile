@@ -39,7 +39,7 @@ check: ontologies/efo.owl ontologies/efo2.owl
 	$(ROBOT) diff --left ontologies/efo2.owl --right ontologies/efo.owl -o $@.txt
 
 ontologies/mp-ext-merged.owl:
-	$(ROBOT) merge -I https://raw.githubusercontent.com/obophenotype/mammalian-phenotype-ontology/master/scratch/mp-ext-merged.owl -o $@
+	$(ROBOT) merge -I https://raw.githubusercontent.com/obophenotype/mammalian-phenotype-ontology/main/scratch/mp-ext-merged.owl -o $@
 
 ontologies/uberon-ma.owl:
 	$(ROBOT) merge -I http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-ma.owl -o $@
