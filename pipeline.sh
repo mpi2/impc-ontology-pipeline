@@ -12,7 +12,7 @@
 #     bsub -Is -M 12G -R "rusage[mem=12G]" singularity shell docker://obolibrary/odkfull:latest
 # 2. From the bsub shell created above:
 #    A. Execute the statements below between 'export mphp...' and 'cd impc-ontology-pipeline' (inclusive).
-#    B. Make impc_ontologies -B
+#    B. make impc_ontologies -B
 export mphp=/nfs/public/rw/homes/tc_mi01/mphp
 export pipeline=$mphp/impc-ontology-pipeline
 export ROBOT_JAVA_ARGS='-Xmx12G'
